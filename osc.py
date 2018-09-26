@@ -40,6 +40,7 @@ class Oscilocope(object):
         img = []
         i = 0
 
+        # předělat na systém příkazů
         self.send_cmd('HARDCopy:PORT RS232')
         self.send_cmd('HARDCopy:FORMat TIFf')
         self.send_cmd('HARDCopy:LAYout PORTRait')
@@ -90,11 +91,13 @@ class Oscilocope(object):
         s = ''.join(chr(i) for i in value)
         print('\nRead value is ', s)
 
+        # TODO řešit jinde
         with open(data_url, "a") as f:
             writer = csv.writer(f, delimiter=";")
             writer.writerow([s])
 
     def send_commands(self):
+        # TODO předělat na systém příkazů
         self.send_byte(3)
         self.send_cmd('SELECT:CH1 ON')
         self.send_cmd('SELECT:CH2 ON')
@@ -118,6 +121,7 @@ class Oscilocope(object):
         print('Commands sended')
 
     def recieve_values(self):
+        # TODO oddělit čtení hodnot od interakce z uživatelem
         data_url = DATA_DIR + '/'
         data_url += time.strftime('%Y-%m-%d_%H-%M-%S_', time.localtime())
         data_url += input('Enter image name >>> ') + '.csv'
