@@ -52,7 +52,6 @@ class Oscilocope(object):
                         break
 
         print('\nReceive Complete')
-        self.close_serial_port()
 
         if not os.path.exists(IMG_DIR):
             os.makedirs(IMG_DIR)
