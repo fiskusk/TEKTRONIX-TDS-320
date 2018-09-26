@@ -10,16 +10,17 @@ import log
 
 
 class UART:
-    def __init__(self,
-                 name='CP2102',
-                 baudrate=115200,
-                 bytesize=8,
-                 parity='N',
-                 stopbits=1,
-                 timeout=None,
-                 delay=0.01,
-                 port=None
-                 ):
+    def __init__(
+        self,
+        name='CP2102',
+        baudrate=115200,
+        bytesize=8,
+        parity='N',
+        stopbits=1,
+        timeout=None,
+        delay=0.01,
+        port=None
+    ):
         self.name = name
         self.delay = delay
         self.ser = serial.Serial()
