@@ -10,14 +10,30 @@ import log
 
 
 class UART:
-    def __init__(self, name='CP2102', baudrate=115200, bytesize=8, parity='N', port=None):
+    def __init__(self,
+                 name='CP2102',
+                 baudrate=115200,
+                 bytesize=8,
+                 parity='N',
+                 stopbits=1,
+                 timeout=None,
+                 delay=0.01,
+                 port=None
+                 ):
         self.name = name
+        self.delay = delay
         self.ser = serial.Serial()
         self.ser.baudrate = baudrate
         self.ser.bytesize = bytesize
         self.ser.parity = parity
-        self.ser.timeout = 0.1                 # in seconds
-        if port == None:
+        self.ser.timeout = timeout
+
+        if stopbits == 1:
+            self.ser.stopbits = serial.STOPBITS_ONE
+        elif stopbits == 2:
+            self.ser.stopbits = serial.STOPBITS_TWO
+
+        if port is None:
             self.ser.port = self.find_device()
         else:
             self.ser.port = port
@@ -51,7 +67,6 @@ class UART:
             log.err('port {} opening is fail'.format(self.ser.port))
             exit(1)
 
-        #time.sleep(2)
         self.ser.reset_input_buffer()
 
     def close_connection(self):

@@ -66,5 +66,5 @@ class Oscilocope(object):
         print('Image created!')
 
 
-osc = Oscilocope('ATEN USB to Serial Bridge')
+osc = Oscilocope(name='ATEN USB to Serial Bridge', baudrate=19200)
 osc.read_TIFF()
