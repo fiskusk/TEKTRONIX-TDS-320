@@ -7,7 +7,15 @@ import time
 import sys
 import os
 
+from uart import UART
+
 IMG_DIR = 'img'
+
+
+class Oscilocope(object):
+    def __init__(self):
+        self.uart = UART()
+
 
 class OsciloImageReader():
     def __init__(self, port):
@@ -46,7 +54,7 @@ class OsciloImageReader():
         if type(cmd) == str:
             for c in cmd:
                 self.send_byte(ord(c))
-            self.send_byte(10) # LF
+            self.send_byte(10)  # LF
             print('Send command {}.'.format(cmd))
 
     def close_serial_port(self):
@@ -55,7 +63,7 @@ class OsciloImageReader():
         print('Close port')
 
     def read_TIFF(self):
-        tiff_end = (0x49,0x46,0x46,0x20,0x44,0x72,0x69,0x76,0x65,0x72,0x20,0x31,0x2E,0x30,0x00)
+        tiff_end = (0x49, 0x46, 0x46, 0x20, 0x44, 0x72, 0x69, 0x76, 0x65, 0x72, 0x20, 0x31, 0x2E, 0x30, 0x00)
         tiff_end_len = len(tiff_end)
         image_complate = False
 
@@ -99,6 +107,8 @@ class OsciloImageReader():
         fw.close()
         print('Image created!')
 
+
+Oscilocope()
 
 if sys.platform == 'win32':
     OsciloImageReader('COM12')
