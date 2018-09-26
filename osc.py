@@ -2,9 +2,7 @@
 # wykys 2017
 # program for download the image screen from TEKTRONIX TDS 320
 
-import serial
 import time
-import sys
 import os
 
 from uart import UART
@@ -13,54 +11,15 @@ IMG_DIR = 'img'
 
 
 class Oscilocope(object):
-    def __init__(self):
+    def __init__(self, name=''):
         self.uart = UART()
 
-
-class OsciloImageReader():
-    def __init__(self, port):
-        """ initialization """
-        self.port = port
-        self.ser = serial.Serial()
-        self.open_serial_port()
-        self.read_TIFF()
-
-    def open_serial_port(self):
-        """ open connection """
-        self.ser.port = self.port
-        self.ser.baudrate = 19200
-        self.ser.stopbits = serial.STOPBITS_ONE
-        self.ser.parity = serial.PARITY_NONE
-        self.ser.bytesize = serial.EIGHTBITS
-        self.ser.timeout = None
-        try:
-            self.ser.open()
-            print('Port {} is open.'.format(self.port))
-        except serial.SerialException:
-            print('Port {} opening error!'.format(self.port))
-            sys.exit()
-
-    def read_byte(self):
-        """ read one byte """
-        return int.from_bytes(self.ser.read(1), byteorder='little', signed=False)
-
-    def send_byte(self, byte):
-        """ write one byte """
-        self.ser.write(bytes((byte,)))
-        time.sleep(0.01)
-
     def send_cmd(self, cmd):
-        """ send command """
         if type(cmd) == str:
             for c in cmd:
-                self.send_byte(ord(c))
-            self.send_byte(10)  # LF
+                self.uart.send_byte(ord(c))
+            self.uart.send_byte(10)  # LF
             print('Send command {}.'.format(cmd))
-
-    def close_serial_port(self):
-        """ end connection """
-        self.ser.close()
-        print('Close port')
 
     def read_TIFF(self):
         tiff_end = (0x49, 0x46, 0x46, 0x20, 0x44, 0x72, 0x69, 0x76, 0x65, 0x72, 0x20, 0x31, 0x2E, 0x30, 0x00)
@@ -92,7 +51,7 @@ class OsciloImageReader():
                         image_complate = False
                         break
 
-        print('\nReceive Complate')
+        print('\nReceive Complete')
         self.close_serial_port()
 
         if not os.path.exists(IMG_DIR):
@@ -108,9 +67,5 @@ class OsciloImageReader():
         print('Image created!')
 
 
-Oscilocope()
-
-if sys.platform == 'win32':
-    OsciloImageReader('COM12')
-else:
-    OsciloImageReader('/dev/ttyUSB0')
+osc = Oscilocope('ATEN USB to Serial Bridge')
+osc.read_TIFF()
