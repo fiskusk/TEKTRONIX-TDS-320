@@ -12,7 +12,7 @@ IMG_DIR = 'img'
 
 class Oscilocope(object):
     def __init__(self, name=''):
-        self.uart = UART(name)
+        self.uart = UART(name, baudrate=19200)
 
     def send_cmd(self, cmd):
         if type(cmd) == str:
@@ -66,5 +66,5 @@ class Oscilocope(object):
         print('Image created!')
 
 
-osc = Oscilocope(name='ATEN USB to Serial Bridge', baudrate=19200)
+osc = Oscilocope('ATEN USB to Serial Bridge')
 osc.read_TIFF()
