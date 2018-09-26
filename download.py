@@ -101,6 +101,6 @@ class OsciloImageReader():
 
 
 if sys.platform == 'win32':
-    OsciloImageReader('COM11')
+    OsciloImageReader('COM12')
 else:
     OsciloImageReader('/dev/ttyUSB0')
