@@ -37,7 +37,7 @@ class Oscilocope(object):
         print('Waiting for dates...')
 
         while (not image_complate):
-            byte = self.read_byte()
+            byte = self.uart.read_byte()
             img.append(byte)
             i += 1
 
