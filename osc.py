@@ -12,7 +12,7 @@ IMG_DIR = 'img'
 
 class Oscilocope(object):
     def __init__(self, name=''):
-        self.uart = UART()
+        self.uart = UART(name)
 
     def send_cmd(self, cmd):
         if type(cmd) == str:
