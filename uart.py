@@ -9,6 +9,17 @@ import os
 import log
 
 
+def singleton(class_):
+    instances = {}
+
+    def getinstance(*args, **kwargs):
+        if class_ not in instances:
+            instances[class_] = class_(*args, **kwargs)
+        return instances[class_]
+    return getinstance
+
+
+@singleton
 class UART:
     def __init__(
         self,
@@ -44,7 +55,7 @@ class UART:
         self.close_connection()
 
     def cmd_delay(self):
-        time.sleep(0.02)
+        time.sleep(self.delay)
 
     def find_device(self):
         for port in list_ports.comports():
@@ -94,9 +105,9 @@ class UART:
 
         time.sleep(0.003)
 
-    def write(self, cmd):
+    def send_cmd(self, cmd):
         if type(cmd) == str:
             for c in cmd:
                 self.send_byte(ord(c))
                 self.cmd_delay()
-            self.send_byte(ord('\r'))
+            self.send_byte(ord('\n'))
