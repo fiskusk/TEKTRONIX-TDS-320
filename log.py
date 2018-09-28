@@ -1,7 +1,8 @@
 # wykys 2018
 
 from sys import stdout, stderr
-from colorama import Fore, Style
+from colorama import Fore, Style, init
+init()
 
 PROMPT = Fore.BLUE + Style.BRIGHT + '>>> ' + Style.RESET_ALL
 
